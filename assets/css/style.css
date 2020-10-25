@@ -19,7 +19,7 @@ h1 {
 }
 
 .col-4 {
-    background-color: rgb(241, 241, 241);
+    background-color: rgb(249, 249, 249);
 }
 
 .col-4 p {
@@ -29,4 +29,9 @@ h1 {
 
 .oi-magnifying-glass {
     color: white;
+}
+
+.five-day-forecast {
+    font-size: 24px;
+    color: #363636;
 }
