@@ -4,12 +4,29 @@
     box-sizing: border-box;
 }
 
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
 header {
-    background-color: rgb(54, 54, 54);
+    background-color: #363636;
     color: white;
     text-align: center;
 }
 
 h1 {
     padding: 10px;
+}
+
+.col-4 {
+    background-color: rgb(241, 241, 241);
+}
+
+.col-4 p {
+    font-size: 20px;
+    color: #363636;
+}
+
+.oi-magnifying-glass {
+    color: white;
 }
