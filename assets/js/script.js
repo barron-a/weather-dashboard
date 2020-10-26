@@ -99,19 +99,28 @@ function getFiveDayForecast(city) {
         })
 }
 function displayForecast(forecast, cityNameSearch) {
+    var cardDeck = document.getElementById("card-deck")
+    cardDeck.innerHTML = "";
     for (i = 0; i < 40; i+=8) {
+        // 5 day date variable work
         var fiveDateTime = forecast.list[i].dt_txt;
         var fiveDateNoTime = fiveDateTime.split(" ", 1);
+        dateStr = fiveDateNoTime.toString();
+        var fiveDate = moment(dateStr).format("l");
+
+        // 5 day icon variable work
         var fiveIconCode = forecast.list[i].weather[0].icon;
         var fiveIcon = document.createElement("img");
         fiveIcon.src = "http://openweathermap.org/img/wn/" + fiveIconCode + "@2x.png"
+
+        // 5 day temp variable
         var fiveTemp = forecast.list[i].main.temp;
+
+        // 5 day humidity variable
         var fiveHumidity = forecast.list[i].main.humidity;
-        
-        var cardDeck = document.getElementById("card-deck")
 
         var dayCard = document.createElement("div")
-        dayCard.setAttribute("class", "card text-white bg-primary")
+        dayCard.setAttribute("class", "card text-white bg-primary mx-2")
         cardDeck.appendChild(dayCard);
 
         var cardBody = document.createElement("div");
@@ -119,7 +128,7 @@ function displayForecast(forecast, cityNameSearch) {
         dayCard.appendChild(cardBody);
 
         var cardDate = document.createElement("h5");
-        cardDate.textContent = fiveDateNoTime;
+        cardDate.textContent = fiveDate;
         cardBody.appendChild(cardDate);
 
         cardBody.appendChild(fiveIcon);
