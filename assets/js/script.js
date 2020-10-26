@@ -6,11 +6,18 @@ var currentCity = document.getElementById("city");
 var currentTemp = document.getElementById("temperature");
 var currentHumidity = document.getElementById("humidity");
 var currentWindSpeed = document.getElementById("wind-speed");
-var fiveDayDate = document.getElementById("date");
-var fiveDayIcon = document.getElementById("weather-icon");
-var fiveDayTemp = document.getElementById("five-day-temp");
-var fiveDayHumidity = document.getElementById("five-day-humidity");
+var day = document.getElementById("day");
+// var fiveDayDate = document.getElementById("date");
+// var fiveDayIcon = document.getElementById("weather-icon");
+// var fiveDayTemp = document.getElementById("five-day-temp");
+// var fiveDayHumidity = document.getElementById("five-day-humidity");
 var currentDate = " (" + moment().format("l") + ")";
+
+var days = [
+    {
+
+    }
+]
 
 // function to validate city name
 function inputSubmitHandler(event) {
@@ -86,6 +93,7 @@ function getFiveDayForecast(city) {
     fetch(fiveDayApiUrl).then(function(response) {
         if (response.ok) {
             response.json().then(function(data) {
+                console.log(data);
                 displayForecast(data, city);
             })
         } else {
@@ -96,8 +104,41 @@ function getFiveDayForecast(city) {
             alert("Unable to connect to OpenWeather");
         })
 }
-function displayForecast() {
+function displayForecast(forecast, cityNameSearch) {
+    for (i = 0; i < 40; i+=8) {
+        var fiveDateTime = forecast.list[i].dt_txt;
+        var fiveDateNoTime = fiveDateTime.split(" ", 1);
+        var fiveIconCode = forecast.list[i].weather[0].icon;
+        var fiveIcon = document.createElement("img");
+        fiveIcon.src = "http://openweathermap.org/img/wn/" + fiveIconCode + "@2x.png"
+        var fiveTemp = forecast.list[i].main.temp;
+        var fiveHumidity = forecast.list[i].main.humidity;
+        
+        var cardDeck = document.getElementById("card-deck")
 
+        var dayCard = document.createElement("div")
+        dayCard.setAttribute("class", "card text-white bg-primary")
+        cardDeck.appendChild(dayCard);
+
+        var cardBody = document.createElement("div");
+        cardBody.setAttribute("class", "card-body");
+        dayCard.appendChild(cardBody);
+
+        var cardDate = document.createElement("h5");
+        cardDate.textContent = fiveDateNoTime;
+        cardBody.appendChild(cardDate);
+
+        cardBody.appendChild(fiveIcon);
+
+        var cardTemp = document.createElement("p");
+        cardTemp.textContent = "Temp: " + fiveTemp + "°F";
+        cardBody.appendChild(cardTemp);
+
+        var cardHumidity = document.createElement("p");
+        cardHumidity.textContent = "Humidity: " + fiveHumidity + "%";
+        cardBody.appendChild(cardHumidity);
+        
+    }
 }
 
 searchButtonEl.addEventListener("click", inputSubmitHandler);
