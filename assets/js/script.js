@@ -1,14 +1,13 @@
 // global variables
 
 // DOM variables
-cityNameSearch = document.getElementById("city-name");
-searchButtonEl = document.getElementById("search-button");
-weatherContainerEl = document.getElementById("current-weather-container");
-currentCity = document.getElementById("city");
-currentTemp = document.getElementById("temperature");
-currentHumidity = document.getElementById("humidity");
-currentWindSpeed = document.getElementById("wind-speed");
-currentUvIndex = document.getElementById("uv-index");
+var cityNameSearch = document.getElementById("city-name");
+var searchButtonEl = document.getElementById("search-button");
+var weatherContainerEl = document.getElementById("current-weather-container");
+var currentCity = document.getElementById("city");
+var currentTemp = document.getElementById("temperature");
+var currentHumidity = document.getElementById("humidity");
+var currentWindSpeed = document.getElementById("wind-speed");
 
 // function to validate city name
 function inputSubmitHandler(event) {
@@ -26,30 +25,52 @@ function inputSubmitHandler(event) {
 function getCurrentWeather(city) {
     //format the openweather api url
     var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=fa4b3ff2ab9a05f16ef5ed6b5cb746e8"
-    fetch(apiUrl).then(function(response) {
+    fetch(apiUrl).then(function (response) {
         if (response.ok) {
-            response.json().then(function(data, weather) {
-                console.log(data)
+            response.json().then(function (data) {
+                var latitude = data.coord.lat;
+                var longitude = data.coord.lon;
+                var uvApiUrl = "https://api.openweathermap.org/data/2.5/uvi?lat=" + latitude + "&lon=" + longitude + "&appid=fa4b3ff2ab9a05f16ef5ed6b5cb746e8";
+                console.log(uvApiUrl);
                 displayCurrentWeather(data, city)
-            });
+                return fetch(uvApiUrl);
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(response) {
+                console.log(response.value);
+                var uvIndex = response.value;
+                var currentUvIndexEl = document.getElementById("uv-index");
+                currentUvIndexEl.textContent = uvIndex;
+                if (uvIndex <= 2) {
+                    currentUvIndexEl.setAttribute("class", "bg-success");
+                } else if (uvIndex > 7) {
+                    currentUvIndexEl.setAttribute("class", "bg-danger");
+                } else {
+                    currentUvIndexEl.setAttribute("class", "bg-warning");
+                };
+            })
         } else {
             alert("Error: " + response.statusText)
         }
     })
-    .catch(function(error) {
-        alert("Unable to conect to OpenWeather")
-    })
+        .catch(function (error) {
+            alert("Unable to conect to OpenWeather")
+        })
 }
 
 function displayCurrentWeather(weather, cityNameSearch) {
-    var temperature = weather.main.temp;
+    var temperature = weather.main.temp + " °F";
     var humidity = weather.main.humidity + "%";
-    var windSpeed = weather.wind.speed + "MPH";
+    var windSpeed = weather.wind.speed + " MPH";
     currentCity.textContent = cityNameSearch.charAt(0).toUpperCase() + cityNameSearch.slice(1);
     currentTemp.textContent = temperature;
     currentHumidity.textContent = humidity;
     currentWindSpeed.textContent = windSpeed;
+}
 
+function getCurrentUvIndex() {
 
 }
 

@@ -31,6 +31,24 @@ h1 {
     color: white;
 }
 
+.bg-success {
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.bg-warning {
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.bg-danger {
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+
 .five-day-forecast {
     font-size: 24px;
     color: #363636;
