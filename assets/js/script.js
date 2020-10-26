@@ -8,6 +8,8 @@ var currentCity = document.getElementById("city");
 var currentTemp = document.getElementById("temperature");
 var currentHumidity = document.getElementById("humidity");
 var currentWindSpeed = document.getElementById("wind-speed");
+var currentDate = " (" + moment().format("l") + ")";
+console.log(currentDate);
 
 // function to validate city name
 function inputSubmitHandler(event) {
@@ -24,14 +26,14 @@ function inputSubmitHandler(event) {
 // function to fetch current weather
 function getCurrentWeather(city) {
     //format the openweather api url
-    var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=fa4b3ff2ab9a05f16ef5ed6b5cb746e8"
+    var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=fa4b3ff2ab9a05f16ef5ed6b5cb746e8";
+    console.log(apiUrl);
     fetch(apiUrl).then(function (response) {
         if (response.ok) {
             response.json().then(function (data) {
                 var latitude = data.coord.lat;
                 var longitude = data.coord.lon;
                 var uvApiUrl = "https://api.openweathermap.org/data/2.5/uvi?lat=" + latitude + "&lon=" + longitude + "&appid=fa4b3ff2ab9a05f16ef5ed6b5cb746e8";
-                console.log(uvApiUrl);
                 displayCurrentWeather(data, city)
                 return fetch(uvApiUrl);
             })
@@ -39,7 +41,6 @@ function getCurrentWeather(city) {
                 return response.json();
             })
             .then(function(response) {
-                console.log(response.value);
                 var uvIndex = response.value;
                 var currentUvIndexEl = document.getElementById("uv-index");
                 currentUvIndexEl.textContent = uvIndex;
@@ -64,7 +65,14 @@ function displayCurrentWeather(weather, cityNameSearch) {
     var temperature = weather.main.temp + " °F";
     var humidity = weather.main.humidity + "%";
     var windSpeed = weather.wind.speed + " MPH";
+    var iconCode = weather.weather[0].icon;
+    var icon = document.createElement("img");
+    icon.src = "http://openweathermap.org/img/wn/" + iconCode + "@2x.png"
+
     currentCity.textContent = cityNameSearch.charAt(0).toUpperCase() + cityNameSearch.slice(1);
+    currentCity.append(currentDate);
+    currentCity.append(icon);
+    console.log(icon);
     currentTemp.textContent = temperature;
     currentHumidity.textContent = humidity;
     currentWindSpeed.textContent = windSpeed;
