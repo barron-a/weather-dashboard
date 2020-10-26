@@ -13,12 +13,6 @@ var day = document.getElementById("day");
 // var fiveDayHumidity = document.getElementById("five-day-humidity");
 var currentDate = " (" + moment().format("l") + ")";
 
-var days = [
-    {
-
-    }
-]
-
 // function to validate city name
 function inputSubmitHandler(event) {
     event.preventDefault();
@@ -137,7 +131,6 @@ function displayForecast(forecast, cityNameSearch) {
         var cardHumidity = document.createElement("p");
         cardHumidity.textContent = "Humidity: " + fiveHumidity + "%";
         cardBody.appendChild(cardHumidity);
-        
     }
 }
 
