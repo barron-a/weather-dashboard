@@ -1,5 +1,3 @@
-// global variables
-
 // DOM variables
 var cityNameSearch = document.getElementById("city-name");
 var searchButtonEl = document.getElementById("search-button");
@@ -8,8 +6,11 @@ var currentCity = document.getElementById("city");
 var currentTemp = document.getElementById("temperature");
 var currentHumidity = document.getElementById("humidity");
 var currentWindSpeed = document.getElementById("wind-speed");
+var fiveDayDate = document.getElementById("date");
+var fiveDayIcon = document.getElementById("weather-icon");
+var fiveDayTemp = document.getElementById("five-day-temp");
+var fiveDayHumidity = document.getElementById("five-day-humidity");
 var currentDate = " (" + moment().format("l") + ")";
-console.log(currentDate);
 
 // function to validate city name
 function inputSubmitHandler(event) {
@@ -17,6 +18,7 @@ function inputSubmitHandler(event) {
     var city = cityNameSearch.value.trim();
     if (city) {
         getCurrentWeather(city);
+        getFiveDayForecast(city);
         cityNameSearch.value = "";
     } else {
         alert("Please enter a city name");
@@ -61,6 +63,7 @@ function getCurrentWeather(city) {
         })
 }
 
+// function to display 
 function displayCurrentWeather(weather, cityNameSearch) {
     var temperature = weather.main.temp + " °F";
     var humidity = weather.main.humidity + "%";
@@ -72,13 +75,28 @@ function displayCurrentWeather(weather, cityNameSearch) {
     currentCity.textContent = cityNameSearch.charAt(0).toUpperCase() + cityNameSearch.slice(1);
     currentCity.append(currentDate);
     currentCity.append(icon);
-    console.log(icon);
     currentTemp.textContent = temperature;
     currentHumidity.textContent = humidity;
     currentWindSpeed.textContent = windSpeed;
 }
 
-function getCurrentUvIndex() {
+function getFiveDayForecast(city) {
+    var fiveDayApiUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid=fa4b3ff2ab9a05f16ef5ed6b5cb746e8";
+    console.log(fiveDayApiUrl);
+    fetch(fiveDayApiUrl).then(function(response) {
+        if (response.ok) {
+            response.json().then(function(data) {
+                displayForecast(data, city);
+            })
+        } else {
+            alert("Error: " + response.statusText);
+        }
+    })
+        .catch(function (error) {
+            alert("Unable to connect to OpenWeather");
+        })
+}
+function displayForecast() {
 
 }
 
