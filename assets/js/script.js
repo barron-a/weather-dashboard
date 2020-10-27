@@ -33,7 +33,7 @@ function inputSubmitHandler(event) {
         cityListItem.setAttribute("class", "list-group-item text-capitalize");
         cityListItem.setAttribute("id", "search-history-item");
         cityListItem.textContent = city
-        cityList.appendChild(cityListItem);
+        cityList.insertBefore(cityListItem, cityList.childNodes[0]);
 
         getCurrentWeather(city);
         getFiveDayForecast(city);
