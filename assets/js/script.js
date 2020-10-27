@@ -12,26 +12,31 @@ var day = document.getElementById("day");
 // var fiveDayTemp = document.getElementById("five-day-temp");
 // var fiveDayHumidity = document.getElementById("five-day-humidity");
 var currentDate = " (" + moment().format("l") + ")";
-var cities = [];
 
-function loadCities() {
-    cities = JSON.parse(localStorage.getItem("cities"));
+function loadCities(cities) {
 
-    if (!cities) {
-        cities = [];
-    }
 }
 
 // function to validate city name
 function inputSubmitHandler(event) {
     event.preventDefault();
     var city = cityNameSearch.value.trim();
+    var cities;
+
+    if (localStorage.getItem("cities") === null) {
+        cities = [];
+    } else {
+        cities = JSON.parse(localStorage.getItem("cities"));
+    }
+
+    cities.push(city);
+    localStorage.setItem("cities", JSON.stringify(cities));
 
     if (city) {
+        // add searched city to list on left
         var cityList = document.getElementById("prev-cities");
         var cityListItem = document.createElement("li");
         cityListItem.setAttribute("class", "list-group-item text-capitalize");
-        cityListItem.setAttribute("id", "search-history-item");
         cityListItem.textContent = city
         cityList.insertBefore(cityListItem, cityList.childNodes[0]);
 
