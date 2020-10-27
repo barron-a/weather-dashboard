@@ -1,4 +1,4 @@
-// DOM variables
+// variables
 var cityNameSearch = document.getElementById("city-name");
 var searchButtonEl = document.getElementById("search-button");
 var weatherContainerEl = document.getElementById("current-weather-container");
@@ -12,12 +12,29 @@ var day = document.getElementById("day");
 // var fiveDayTemp = document.getElementById("five-day-temp");
 // var fiveDayHumidity = document.getElementById("five-day-humidity");
 var currentDate = " (" + moment().format("l") + ")";
+var cities = [];
+
+function loadCities() {
+    cities = JSON.parse(localStorage.getItem("cities"));
+
+    if (!cities) {
+        cities = [];
+    }
+}
 
 // function to validate city name
 function inputSubmitHandler(event) {
     event.preventDefault();
     var city = cityNameSearch.value.trim();
+
     if (city) {
+        var cityList = document.getElementById("prev-cities");
+        var cityListItem = document.createElement("li");
+        cityListItem.setAttribute("class", "list-group-item text-capitalize");
+        cityListItem.setAttribute("id", "search-history-item");
+        cityListItem.textContent = city
+        cityList.appendChild(cityListItem);
+
         getCurrentWeather(city);
         getFiveDayForecast(city);
         cityNameSearch.value = "";
@@ -73,7 +90,8 @@ function displayCurrentWeather(weather, cityNameSearch) {
     var icon = document.createElement("img");
     icon.src = "http://openweathermap.org/img/wn/" + iconCode + "@2x.png"
 
-    currentCity.textContent = cityNameSearch.charAt(0).toUpperCase() + cityNameSearch.slice(1);
+    currentCity.textContent = cityNameSearch//.charAt(0).toUpperCase() + cityNameSearch.slice(1);
+    currentCity.setAttribute("class", "text-capitalize");
     currentCity.append(currentDate);
     currentCity.append(icon);
     currentTemp.textContent = temperature;
@@ -90,9 +108,7 @@ function getFiveDayForecast(city) {
                 console.log(data);
                 displayForecast(data, city);
             })
-        } else {
-            alert("Error: " + response.statusText);
-        }
+        };
     })
         .catch(function (error) {
             alert("Unable to connect to OpenWeather");
