@@ -13,8 +13,16 @@ var day = document.getElementById("day");
 // var fiveDayHumidity = document.getElementById("five-day-humidity");
 var currentDate = " (" + moment().format("l") + ")";
 
-function loadCities(cities) {
-
+function loadCities() {
+    var cities = JSON.parse(localStorage.getItem("cities"));
+    console.log(cities);
+    for (i = 0; i < cities.length; i++) {
+        var cityList = document.getElementById("prev-cities");
+        var cityListItem = document.createElement("li");
+        cityListItem.setAttribute("class", "list-group-item text-capitalize");
+        cityListItem.textContent = cities[i];
+        cityList.insertBefore(cityListItem, cityList.childNodes[0]);
+    }
 }
 
 // function to validate city name
@@ -45,7 +53,7 @@ function inputSubmitHandler(event) {
         cityNameSearch.value = "";
     } else {
         alert("Please enter a city name");
-    }
+    };
 }
 
 // function to fetch current weather
@@ -163,5 +171,7 @@ function displayForecast(forecast, cityNameSearch) {
         cardBody.appendChild(cardHumidity);
     }
 }
+
+loadCities();
 
 searchButtonEl.addEventListener("click", inputSubmitHandler);
