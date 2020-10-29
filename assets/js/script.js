@@ -22,11 +22,12 @@ function loadCities() {
         var cities = [];
     } else {
         var cities = JSON.parse(localStorage.getItem("cities"));
-        for (i = 0; i <= cities.length; i++) {
+        for (i = 0; i < cities.length; i++) {
             var cityList = document.getElementById("prev-cities");
             var cityListItem = document.createElement("li");
             cityListItem.setAttribute("class", "list-group-item text-capitalize");
             cityListItem.textContent = cities[i];
+            cityListItem.addEventListener("click", getCurrentWeather);
             cityList.insertBefore(cityListItem, cityList.childNodes[0]);
         };
     }
@@ -181,6 +182,11 @@ function displayForecast(forecast, cityNameSearch) {
         cardBody.appendChild(cardHumidity);
     }
 }
+
+// function to execute when search history list item is clicked
+// function clickedCity() {
+//     getCurrentWeather(this.value.trim());
+// }
 
 loadCities();
 
