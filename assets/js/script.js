@@ -8,10 +8,6 @@ var currentHumidity = document.getElementById("humidity");
 var currentWindSpeed = document.getElementById("wind-speed");
 var day = document.getElementById("day");
 var clearSearch = document.getElementById("clear-search");
-// var fiveDayDate = document.getElementById("date");
-// var fiveDayIcon = document.getElementById("weather-icon");
-// var fiveDayTemp = document.getElementById("five-day-temp");
-// var fiveDayHumidity = document.getElementById("five-day-humidity");
 var currentDate = " (" + moment().format("l") + ")";
 
 function emptyStorage() {
@@ -112,7 +108,7 @@ function displayCurrentWeather(weather, cityNameSearch) {
     var icon = document.createElement("img");
     icon.src = "http://openweathermap.org/img/wn/" + iconCode + "@2x.png"
 
-    currentCity.textContent = cityNameSearch//.charAt(0).toUpperCase() + cityNameSearch.slice(1);
+    currentCity.textContent = cityNameSearch;
     currentCity.setAttribute("class", "text-capitalize");
     currentCity.append(currentDate);
     currentCity.append(icon);
