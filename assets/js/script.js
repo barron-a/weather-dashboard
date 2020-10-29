@@ -7,21 +7,30 @@ var currentTemp = document.getElementById("temperature");
 var currentHumidity = document.getElementById("humidity");
 var currentWindSpeed = document.getElementById("wind-speed");
 var day = document.getElementById("day");
+var clearSearch = document.getElementById("clear-search");
 // var fiveDayDate = document.getElementById("date");
 // var fiveDayIcon = document.getElementById("weather-icon");
 // var fiveDayTemp = document.getElementById("five-day-temp");
 // var fiveDayHumidity = document.getElementById("five-day-humidity");
 var currentDate = " (" + moment().format("l") + ")";
 
+function emptyStorage() {
+    localStorage.clear("cities");
+    location.reload();
+}
+
 function loadCities() {
-    var cities = JSON.parse(localStorage.getItem("cities"));
-    console.log(cities);
-    for (i = 0; i < cities.length; i++) {
-        var cityList = document.getElementById("prev-cities");
-        var cityListItem = document.createElement("li");
-        cityListItem.setAttribute("class", "list-group-item text-capitalize");
-        cityListItem.textContent = cities[i];
-        cityList.insertBefore(cityListItem, cityList.childNodes[0]);
+    if (localStorage.getItem("cities") === null) {
+        var cities = [];
+    } else {
+        var cities = JSON.parse(localStorage.getItem("cities"));
+        for (i = 0; i <= cities.length; i++) {
+            var cityList = document.getElementById("prev-cities");
+            var cityListItem = document.createElement("li");
+            cityListItem.setAttribute("class", "list-group-item text-capitalize");
+            cityListItem.textContent = cities[i];
+            cityList.insertBefore(cityListItem, cityList.childNodes[0]);
+        };
     }
 }
 
@@ -175,3 +184,4 @@ function displayForecast(forecast, cityNameSearch) {
 loadCities();
 
 searchButtonEl.addEventListener("click", inputSubmitHandler);
+clearSearch.addEventListener("click", emptyStorage);
