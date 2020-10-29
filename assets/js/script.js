@@ -10,11 +10,13 @@ var day = document.getElementById("day");
 var clearSearch = document.getElementById("clear-search");
 var currentDate = " (" + moment().format("l") + ")";
 
+// function to clear search history
 function emptyStorage() {
     localStorage.clear("cities");
     location.reload();
 }
 
+// function to load previously searched cities from search history
 function loadCities() {
     if (localStorage.getItem("cities") === null) {
         var cities = [];
@@ -99,7 +101,7 @@ function getCurrentWeather(city) {
         })
 }
 
-// function to display 
+// function to display current weather
 function displayCurrentWeather(weather, cityNameSearch) {
     var temperature = weather.main.temp + " °F";
     var humidity = weather.main.humidity + "%";
@@ -117,6 +119,7 @@ function displayCurrentWeather(weather, cityNameSearch) {
     currentWindSpeed.textContent = windSpeed;
 }
 
+// function to get five day forecast
 function getFiveDayForecast(city) {
     var fiveDayApiUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid=fa4b3ff2ab9a05f16ef5ed6b5cb746e8";
     console.log(fiveDayApiUrl);
@@ -132,6 +135,8 @@ function getFiveDayForecast(city) {
             alert("Unable to connect to OpenWeather");
         })
 }
+
+// function to display the five day forecast
 function displayForecast(forecast, cityNameSearch) {
     var cardDeck = document.getElementById("card-deck")
     cardDeck.innerHTML = "";
@@ -179,5 +184,6 @@ function displayForecast(forecast, cityNameSearch) {
 
 loadCities();
 
+//event listeners
 searchButtonEl.addEventListener("click", inputSubmitHandler);
 clearSearch.addEventListener("click", emptyStorage);
