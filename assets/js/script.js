@@ -27,13 +27,14 @@ function loadCities() {
             var cityListItem = document.createElement("li");
             cityListItem.setAttribute("class", "list-group-item text-capitalize");
             cityListItem.textContent = cities[i];
-            cityListItem.addEventListener("click", getCurrentWeather);
+            // var clickableCity = document.querySelector("list-group-item");
+            // clickableCity.addEventListener("click", getCurrentWeather(cities[i]));
             cityList.insertBefore(cityListItem, cityList.childNodes[0]);
         };
     }
 }
 
-// function to validate city name
+// function to validate city name and create a list item on the left for the entry
 function inputSubmitHandler(event) {
     event.preventDefault();
     var city = cityNameSearch.value.trim();
