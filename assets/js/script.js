@@ -18,53 +18,71 @@ function emptyStorage() {
 }
 
 // function to load previously searched cities from search history
-function loadCities() {
-    if (localStorage.getItem("cities") === null) {
-        var cities = [];
-    } else {
-        var cities = JSON.parse(localStorage.getItem("cities"));
-        for (i = 0; i < cities.length; i++) {
-            var cityList = document.getElementById("prev-cities");
-            var cityListItem = document.createElement("li");
-            cityListItem.setAttribute("class", "list-group-item text-capitalize");
-            cityListItem.textContent = cities[i];
-            // var clickableCity = document.querySelector("list-group-item");
-            // clickableCity.addEventListener("click", getCurrentWeather(cities[i]));
-            cityList.insertBefore(cityListItem, cityList.childNodes[0]);
-        };
-    }
-}
+// function loadCities() {
+//     if (localStorage.getItem("cities") === null) {
+//         var cities = [];
+//     } else {
+//         var cities = JSON.parse(localStorage.getItem("cities"));
+//         for (i = 0; i < cities.length; i++) {
+//             var cityList = document.getElementById("prev-cities");
+//             var cityListItem = document.createElement("li");
+//             cityListItem.setAttribute("class", "list-group-item text-capitalize");
+//             cityListItem.textContent = cities[i];
+//             //var clickableCity = document.querySelector("list-group-item");
+//             //clickableCity.addEventListener("click", getCurrentWeather(cityListItem.textContent));
+//             //cityList.insertBefore(cityListItem, cityList.childNodes[0]);
+//         };
+//     }
+// }
 
 // function to validate city name and create a list item on the left for the entry
-function inputSubmitHandler(event) {
-    event.preventDefault();
-    var city = cityNameSearch.value.trim();
-    var cities;
+// function inputSubmitHandler(event) {
+//     event.preventDefault();
+//     var city = cityNameSearch.value.trim();
+//     var cities;
 
+//     if (localStorage.getItem("cities") === null) {
+//         cities = [];
+//     } else {
+//         cities = JSON.parse(localStorage.getItem("cities"));
+//     }
+
+//     cities.push(city);
+//     localStorage.setItem("cities", JSON.stringify(cities));
+
+//     if (city) {
+//         // add searched city to list on left
+//         var cityList = document.getElementById("prev-cities");
+//         var cityListItem = document.createElement("li");
+//         cityListItem.setAttribute("id", city);
+//         cityListItem.setAttribute("class", "list-group-item text-capitalize");
+//         cityListItem.textContent = city
+//         //cityList.insertBefore(cityListItem, cityList.childNodes[0]);
+//         cityList.append(cityListItem);
+
+//         getCurrentWeather(city);
+//         getFiveDayForecast(city);
+//         cityNameSearch.value = "";
+//     } else {
+//         alert("Please enter a city name");
+//     };
+// }
+
+function inputSubmitHandler() {
     if (localStorage.getItem("cities") === null) {
         cities = [];
     } else {
         cities = JSON.parse(localStorage.getItem("cities"));
     }
-
-    cities.push(city);
-    localStorage.setItem("cities", JSON.stringify(cities));
-
-    if (city) {
-        // add searched city to list on left
-        var cityList = document.getElementById("prev-cities");
-        var cityListItem = document.createElement("li");
-        cityListItem.setAttribute("id", city);
-        cityListItem.setAttribute("class", "list-group-item text-capitalize");
-        cityListItem.textContent = city
-        cityList.insertBefore(cityListItem, cityList.childNodes[0]);
-
-        getCurrentWeather(city);
-        getFiveDayForecast(city);
-        cityNameSearch.value = "";
-    } else {
-        alert("Please enter a city name");
-    };
+    $(".history").empty()
+    $(".history").append("<ul class='list-group'></ul>")
+    for (i = 0; i < cities.length; i++) {
+        $(".list-group").append(`<li id=${cities[i]}><button>${cities[i]}</button></li>`)
+    }
+    console.log(cities[-1]);
+    getCurrentWeather(cities[-1]);
+    getFiveDayForecast(cities[-1]);
+    cityNameSearch.value = "";
 }
 
 // function to fetch current weather
@@ -191,15 +209,18 @@ function displayForecast(forecast, cityNameSearch) {
 //     getCurrentWeather(this.value.trim());
 // }
 
-loadCities();
+//loadCities();
 
 //event listeners
 searchButtonEl.addEventListener("click", inputSubmitHandler);
 clearSearch.addEventListener("click", emptyStorage);
+
 $(document).ready(function () {
     $(document).on("click", "ul.list-group li", function (event) {
         event.preventDefault();
         $("ul.list-group li").click(function (event) {
+            console.log(event);
+            console.log(event.target);
             var city = $("ul.list-group li").attr("id");
             console.log(city);
             getCurrentWeather(city);
