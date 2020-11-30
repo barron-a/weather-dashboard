@@ -8,7 +8,6 @@ var currentHumidity = document.getElementById("humidity");
 var currentWindSpeed = document.getElementById("wind-speed");
 var day = document.getElementById("day");
 var clearSearch = document.getElementById("clear-search");
-var listItem = document.querySelector("list-group-item");
 var currentDate = " (" + moment().format("l") + ")";
 
 // function to clear search history
@@ -54,7 +53,6 @@ function inputSubmitHandler(event) {
         // add searched city to list on left
         var cityList = document.getElementById("prev-cities");
         var cityListItem = document.createElement("li");
-        cityListItem.setAttribute("id", city);
         cityListItem.setAttribute("class", "list-group-item text-capitalize");
         cityListItem.textContent = city
         cityList.insertBefore(cityListItem, cityList.childNodes[0]);
@@ -81,21 +79,21 @@ function getCurrentWeather(city) {
                 displayCurrentWeather(data, city)
                 return fetch(uvApiUrl);
             })
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (response) {
-                    var uvIndex = response.value;
-                    var currentUvIndexEl = document.getElementById("uv-index");
-                    currentUvIndexEl.textContent = uvIndex;
-                    if (uvIndex <= 2) {
-                        currentUvIndexEl.setAttribute("class", "bg-success");
-                    } else if (uvIndex > 7) {
-                        currentUvIndexEl.setAttribute("class", "bg-danger");
-                    } else {
-                        currentUvIndexEl.setAttribute("class", "bg-warning");
-                    };
-                })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(response) {
+                var uvIndex = response.value;
+                var currentUvIndexEl = document.getElementById("uv-index");
+                currentUvIndexEl.textContent = uvIndex;
+                if (uvIndex <= 2) {
+                    currentUvIndexEl.setAttribute("class", "bg-success");
+                } else if (uvIndex > 7) {
+                    currentUvIndexEl.setAttribute("class", "bg-danger");
+                } else {
+                    currentUvIndexEl.setAttribute("class", "bg-warning");
+                };
+            })
         } else {
             alert("Error: " + response.statusText)
         }
@@ -127,9 +125,9 @@ function displayCurrentWeather(weather, cityNameSearch) {
 function getFiveDayForecast(city) {
     var fiveDayApiUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid=fa4b3ff2ab9a05f16ef5ed6b5cb746e8";
     console.log(fiveDayApiUrl);
-    fetch(fiveDayApiUrl).then(function (response) {
+    fetch(fiveDayApiUrl).then(function(response) {
         if (response.ok) {
-            response.json().then(function (data) {
+            response.json().then(function(data) {
                 console.log(data);
                 displayForecast(data, city);
             })
@@ -144,7 +142,7 @@ function getFiveDayForecast(city) {
 function displayForecast(forecast, cityNameSearch) {
     var cardDeck = document.getElementById("card-deck")
     cardDeck.innerHTML = "";
-    for (i = 0; i < 40; i += 8) {
+    for (i = 0; i < 40; i+=8) {
         // 5 day date variable work
         var fiveDateTime = forecast.list[i].dt_txt;
         var fiveDateNoTime = fiveDateTime.split(" ", 1);
@@ -196,13 +194,3 @@ loadCities();
 //event listeners
 searchButtonEl.addEventListener("click", inputSubmitHandler);
 clearSearch.addEventListener("click", emptyStorage);
-$(document).ready(function () {
-    $(document).on("click", "ul.list-group li", function (event) {
-        event.preventDefault();
-        $("ul.list-group li").click(function (event) {
-            var city = $("ul.list-group li").attr("id");
-            console.log(city);
-            getCurrentWeather(city);
-        })
-    });
-})
