@@ -53,3 +53,7 @@ h1 {
     font-size: 24px;
     color: #363636;
 }
+
+#prev-cities>li {
+    cursor: pointer;
+}

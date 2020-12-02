@@ -22,16 +22,36 @@ function loadCities() {
         var cities = [];
     } else {
         var cities = JSON.parse(localStorage.getItem("cities"));
-        for (i = 0; i < cities.length; i++) {
-            var cityList = document.getElementById("prev-cities");
-            var cityListItem = document.createElement("li");
-            cityListItem.setAttribute("class", "list-group-item text-capitalize");
-            cityListItem.textContent = cities[i];
-            // var clickableCity = document.querySelector("list-group-item");
-            // clickableCity.addEventListener("click", getCurrentWeather(cities[i]));
-            cityList.insertBefore(cityListItem, cityList.childNodes[0]);
-        };
+        if (cities.length) {
+            for (i = 0; i < cities.length; i++) {
+                addPreviousCity(cities[i], i === cities.length - 1);
+            };
+            getCurrentWeather(cities[cities.length -1]);
+            getFiveDayForecast(cities[cities.length -1]);
+        }
     }
+};
+
+function clearActivePreviousCities() {
+    document.querySelectorAll('#prev-cities>li').forEach(li => li.classList.remove('active'));
+}
+
+function addPreviousCity(cityName, isActive) {
+    var cityList = document.getElementById("prev-cities");
+    var cityListItem = document.createElement("li");
+    cityListItem.classList.add("list-group-item","text-capitalize");
+    cityListItem.textContent = cityName;
+    if (isActive) {
+        clearActivePreviousCities();
+        cityListItem.classList.add('active');
+    }
+    cityListItem.addEventListener("click", () => {
+        clearActivePreviousCities();
+        cityListItem.classList.add('active');
+        getCurrentWeather(cityName);
+        getFiveDayForecast(cityName);
+    })
+    cityList.insertBefore(cityListItem, cityList.childNodes[0]);
 }
 
 // function to validate city name and create a list item on the left for the entry
@@ -50,13 +70,9 @@ function inputSubmitHandler(event) {
     localStorage.setItem("cities", JSON.stringify(cities));
 
     if (city) {
+        clearActivePreviousCities();
         // add searched city to list on left
-        var cityList = document.getElementById("prev-cities");
-        var cityListItem = document.createElement("li");
-        cityListItem.setAttribute("class", "list-group-item text-capitalize");
-        cityListItem.textContent = city
-        cityList.insertBefore(cityListItem, cityList.childNodes[0]);
-
+        addPreviousCity(city, true);
         getCurrentWeather(city);
         getFiveDayForecast(city);
         cityNameSearch.value = "";
